@@ -11,6 +11,7 @@ function App() {
     const { editor, onReady } = useFabricJSEditor();
 
     const history = [];
+     const [textureDataUrl, setTextureDataUrl] = useState("");
     const [color, setColor] = useState("#35363a");
     const [cropImage, setCropImage] = useState(true);
 
@@ -76,6 +77,10 @@ function App() {
           });
         }
 
+         editor.canvas.on("object:modified", () => updateTexture());
+         editor.canvas.on("object:added", () => updateTexture());
+         editor.canvas.on("object:removed", () => updateTexture());
+
         editor.canvas.renderAll();
       }, [editor]);
       const addBackground = () => {
@@ -95,28 +100,7 @@ function App() {
       };
       const fromSvg = () => {
         fabric.loadSVGFromString(
-          `<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="500" height="500" viewBox="0 0 500 500" xml:space="preserve">
-    <desc>Created with Fabric.js 5.3.0</desc>
-    <defs>
-    </defs>
-    <g transform="matrix(1 0 0 1 662.5 750)"  >
-      <image style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  xlink:href="https://thegraphicsfairy.com/wp-content/uploads/2019/02/Anatomical-Heart-Illustration-Black-GraphicsFairy.jpg" x="-662.5" y="-750" width="1325" height="1500"></image>
-    </g>
-    <g transform="matrix(1 0 0 1 120.5 120.5)"  >
-    <circle style="stroke: rgb(53,54,58); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-opacity: 0; fill-rule: nonzero; opacity: 1;"  cx="0" cy="0" r="20" />
-    </g>
-    <g transform="matrix(1 0 0 1 245.5 200.5)"  >
-    <line style="stroke: rgb(53,54,58); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"  x1="-75" y1="-50" x2="75" y2="50" />
-    </g>
-    <g transform="matrix(1 0 0 1 141.4 220.03)" style=""  >
-        <text xml:space="preserve" font-family="Arial" font-size="16" font-style="normal" font-weight="normal" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(53,54,58); fill-rule: nonzero; opacity: 1; white-space: pre;" ><tspan x="-16.9" y="-5.46" >inset</tspan><tspan x="-16.9" y="15.51" >text</tspan></text>
-    </g>
-    <g transform="matrix(1 0 0 1 268.5 98.5)"  >
-    <rect style="stroke: rgb(53,54,58); stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-opacity: 0; fill-rule: nonzero; opacity: 1;"  x="-20" y="-20" rx="0" ry="0" width="40" height="40" />
-    </g>
-    </svg>`,
+          `<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 297.5 297.5" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="XMLID_40_"> <g> <path style="fill:#ACBFC7;" d="M277.71,158.52v85.7H19.79v-85.7h6.53v40.54c0,16.98,13.81,30.78,30.78,30.78 s30.78-13.8,30.78-30.78v-40.54h30.09v40.54c0,16.98,13.81,30.78,30.78,30.78c16.98,0,30.78-13.8,30.78-30.78v-40.54h30.1v40.54 c0,16.98,13.8,30.78,30.78,30.78c16.97,0,30.78-13.8,30.78-30.78v-40.54H277.71z"></path> <rect x="218.66" y="53.28" style="fill:#CDD9DD;" width="43.49" height="10.53"></rect> <rect x="229.17" y="83.35" style="fill:#CDD9DD;" width="22.48" height="23.92"></rect> <rect x="137.51" y="83.35" style="fill:#CDD9DD;" width="22.48" height="23.92"></rect> <rect x="127.01" y="53.28" style="fill:#CDD9DD;" width="43.49" height="10.53"></rect> <rect x="35.35" y="53.28" style="fill:#CDD9DD;" width="43.49" height="10.53"></rect> <rect x="45.86" y="83.35" style="fill:#CDD9DD;" width="22.48" height="23.92"></rect> <path style="fill:#FF4855;" d="M251.65,126.81v72.25c0,6.2-5.05,11.24-11.24,11.24c-6.2,0-11.24-5.04-11.24-11.24v-72.25H251.65z"></path> <path style="fill:#D61616;" d="M68.34,126.81v72.25c0,6.2-5.04,11.24-11.24,11.24s-11.24-5.04-11.24-11.24v-72.25H68.34z"></path> <path style="fill:#FFD63F;" d="M159.99,126.81v72.25c0,6.2-5.04,11.24-11.24,11.24s-11.24-5.04-11.24-11.24v-72.25H159.99z"></path> <path d="M297.25,148.75v105.24c0,5.4-4.37,9.77-9.77,9.77H10.02c-5.39,0-9.77-4.37-9.77-9.77V148.75c0-5.4,4.38-9.77,9.77-9.77 h16.3V83.35h-0.74c-5.39,0-9.77-4.38-9.77-9.77V43.51c0-5.4,4.38-9.77,9.77-9.77h63.03c5.4,0,9.77,4.37,9.77,9.77v30.07 c0,5.39-4.37,9.77-9.77,9.77h-0.73v55.63h30.09V83.35h-0.73c-5.4,0-9.77-4.38-9.77-9.77V43.51c0-5.4,4.37-9.77,9.77-9.77h63.03 c5.39,0,9.77,4.37,9.77,9.77v30.07c0,5.39-4.38,9.77-9.77,9.77h-0.74v55.63h30.1V83.35h-0.74c-5.39,0-9.77-4.38-9.77-9.77V43.51 c0-5.4,4.38-9.77,9.77-9.77h63.03c5.4,0,9.77,4.37,9.77,9.77v30.07c0,5.39-4.37,9.77-9.77,9.77h-0.73v55.63h16.29 C292.88,138.98,297.25,143.35,297.25,148.75z M277.71,244.22v-85.7h-6.52v40.54c0,16.98-13.81,30.78-30.78,30.78 c-16.98,0-30.78-13.8-30.78-30.78v-40.54h-30.1v40.54c0,16.98-13.8,30.78-30.78,30.78c-16.97,0-30.78-13.8-30.78-30.78v-40.54 H87.88v40.54c0,16.98-13.81,30.78-30.78,30.78s-30.78-13.8-30.78-30.78v-40.54h-6.53v85.7H277.71z M262.15,63.81V53.28h-43.49 v10.53H262.15z M251.65,199.06v-72.25h-22.48v72.25c0,6.2,5.04,11.24,11.24,11.24C246.6,210.3,251.65,205.26,251.65,199.06z M251.65,107.27V83.35h-22.48v23.92H251.65z M170.5,63.81V53.28h-43.49v10.53H170.5z M159.99,199.06v-72.25h-22.48v72.25 c0,6.2,5.04,11.24,11.24,11.24S159.99,205.26,159.99,199.06z M159.99,107.27V83.35h-22.48v23.92H159.99z M78.84,63.81V53.28H35.35 v10.53H78.84z M68.34,199.06v-72.25H45.86v72.25c0,6.2,5.04,11.24,11.24,11.24S68.34,205.26,68.34,199.06z M68.34,107.27V83.35 H45.86v23.92H68.34z"></path> </g> <g> </g> </g> </g></svg>`,
           (objects, options) => {
             editor.canvas._objects.splice(0, editor.canvas._objects.length);
             editor.canvas.backgroundImage = objects[0];
@@ -134,8 +118,8 @@ function App() {
             return;
           }
           editor.canvas.setHeight(500);
-          editor.canvas.setWidth(500);
-          addBackground();
+          editor.canvas.setWidth(600);
+          // addBackground();
           editor.canvas.renderAll();
         }, [editor?.canvas.backgroundImage]);
           const toggleSize = () => {
@@ -192,6 +176,86 @@ function App() {
                const svg = editor.canvas.toSVG();
                console.info(svg);
              };
+
+               const updateTexture = () => {
+                 const dataUrl = editor?.canvas?.toDataURL();
+                 setTextureDataUrl(dataUrl);
+               };
+              //  useEffect(() => {
+              //    if (editor) {
+
+              //     const handleCanvasUpdate = () => {
+              //       const dataUrl = canvas.toDataURL();
+              //       updateTexture(dataUrl);
+              //     };
+              //      const canvas = editor.canvas;
+              //      canvas.on("object:modified", handleCanvasUpdate);
+              //      canvas.on("object:added", handleCanvasUpdate);
+              //      canvas.on("object:removed", handleCanvasUpdate);
+              //      canvas.on("background:changed", handleCanvasUpdate);
+
+              //      return () => {
+              //        canvas.off("object:modified", handleCanvasUpdate);
+              //        canvas.off("object:added", handleCanvasUpdate);
+              //        canvas.off("object:removed", handleCanvasUpdate);
+              //        canvas.off("background:changed", handleCanvasUpdate);
+              //      };
+              //    }
+              //  }, [editor]);
+
+              //  console.log("textureDataUrl", textureDataUrl);
+              // const updateImage=()=>{
+              //   updateTexture()
+              // }
+                // const updateImage = () => {
+                //   const dataUrl = editor?.canvas?.toDataURL();
+                //   onUpdate(dataUrl);
+                // };
+
+                const updateImage = () => {
+                  if (!editor || !editor.canvas) return;
+
+                  // Temporarily disable rendering of background image to avoid tainted canvas issue
+                  const originalBackground = editor.canvas.backgroundImage;
+                  editor.canvas.setBackgroundImage(null);
+
+                  // Create a temporary canvas to render fabric canvas content
+                  const tempCanvas = document.createElement("canvas");
+                  const tempCtx = tempCanvas.getContext("2d");
+
+                  if (tempCtx) {
+                    tempCanvas.width = editor.canvas.width;
+                    tempCanvas.height = editor.canvas.height;
+
+                    // Render fabric canvas content onto the temp canvas
+                    editor.canvas.renderAll();
+                    editor.canvas.forEachObject((obj) => {
+                      const originalOpacity = obj.opacity;
+                      obj.set("opacity", 1); // Ensure all objects are fully opaque for rendering
+                      obj.render(tempCtx);
+                      obj.set("opacity", originalOpacity); // Restore original opacity
+                    });
+
+                    // Convert temp canvas to data URL and pass to onUpdate callback
+                    const dataUrl = tempCanvas.toDataURL();
+                    // console.log("dataUrl", dataUrl);
+                 const byteCharacters = atob(dataUrl.split(",")[1]);
+                 const byteNumbers = new Array(byteCharacters.length);
+                 for (let i = 0; i < byteCharacters.length; i++) {
+                   byteNumbers[i] = byteCharacters.charCodeAt(i);
+                 }
+                 const byteArray = new Uint8Array(byteNumbers);
+                 const blob = new Blob([byteArray], { type: "image/jpeg" });
+                 const blobUrl = URL.createObjectURL(blob);
+                //  console.log("blobUrl", blobUrl);
+                    updateTexture(blobUrl);
+
+                    // Restore original background image
+                    editor.canvas.setBackgroundImage(originalBackground);
+                  }
+                };
+
+
   return (
     <>
       <div className="row ">
@@ -254,9 +318,10 @@ function App() {
         <div className="col-6 custom-h">
           <Canvas shadows camera={{ position: [3, 3, 3], fov: 30 }}>
             <color attach="background" args={["#ececec"]} />
-            <Experience />
+            <Experience textureDataUrl={textureDataUrl} />
           </Canvas>
         </div>
+        <button onClick={updateImage}>Generate</button>
       </div>
     </>
   );

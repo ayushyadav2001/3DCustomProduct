@@ -5,13 +5,21 @@ Command: npx gltfjsx@6.2.3 public/models/mug.glb -o src/components/Mug.jsx -r pu
 
 import { Decal, useGLTF, useTexture } from "@react-three/drei";
 import { useControls } from "leva";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { TextureLoader } from "three";
 import { degToRad } from "three/src/math/MathUtils.js";
 
 // Mugs by Poly by Google [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/8cBJ9XWbkiv)
-export function Mug(props) {
-  const texture = useTexture("/textures/wawa.png");
+export function Mug({ textureDataUrl }) {
+  // const texture = useTexture("/textures/wawa.png");
   const { nodes, materials } = useGLTF("/models/mug.glb");
+  const [texture, setTexture] = useState("/models/mug.glb");
+
+  useEffect(() => {
+    if (textureDataUrl) {
+      new TextureLoader().load(textureDataUrl, setTexture);
+    }
+  }, [textureDataUrl]);
 
   useControls({
     angle: {
@@ -52,7 +60,7 @@ export function Mug(props) {
   const [scale, setScale] = useState([1.5, 1.5, 1.5]);
 
   return (
-    <group {...props} dispose={null}>
+    <group  dispose={null}>
       <mesh
         geometry={nodes.Arc001_1.geometry}
         material={materials["01___Default-2"]}
@@ -82,7 +90,7 @@ export function Mug(props) {
             toneMapped={false}
             transparent
             polygonOffset
-            polygonOffsetFactor={-1} // The mesh should take precedence over the original
+            polygonOffsetFactor={-1}  
           />
         </Decal>
       </mesh>
