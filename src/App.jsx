@@ -321,7 +321,9 @@ function App() {
             <Experience textureDataUrl={textureDataUrl} />
           </Canvas>
         </div>
-        <button onClick={updateImage}>Generate</button>
+        <div className="flex ">
+        <button className="btn btn-primary w-50" onClick={updateImage}>Generate</button>
+        </div>
       </div>
     </>
   );
